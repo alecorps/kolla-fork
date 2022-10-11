@@ -1,0 +1,40 @@
+FROM {{ namespace }}/{{ image_prefix }}nova-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block nova_mksproxy_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{{ macros.enable_extra_repos(['epel']) }}
+
+{% if install_type == 'binary' %}
+    {% if base_package_type == 'rpm' %}
+
+        {% set nova_mksproxy_packages = [] %}
+
+    {% elif base_package_type == 'deb' %}
+
+        {% set nova_mksproxy_packages = [] %}
+
+    {% endif %}
+
+{% elif install_type == 'source' %}
+    {% if base_package_type == 'rpm' %}
+
+        {% set nova_mksproxy_packages = [] %}
+
+    {% elif base_package_type == 'deb' %}
+
+        {% set nova_mksproxy_packages = [] %}
+
+    {% endif %}
+{% endif %}
+
+{{ macros.install_packages(nova_mksproxy_packages | customizable("packages")) }}
+
+{% block nova_mksproxy_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER nova
